@@ -1,0 +1,15 @@
+{
+  "name": "haproxy-sticky-sessions",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "Jonas Lalin",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.0.0"
+  }
+}
