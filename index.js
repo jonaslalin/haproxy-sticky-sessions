@@ -74,7 +74,8 @@ function makeSessionMiddleware() {
       `${sessionIdCookieName}=${sessionId}` +
         '; Path=/' +
         '; HttpOnly' +
-        (secureCookieAttribute ? '; Secure' : '')
+        (secureCookieAttribute ? '; Secure' : '') +
+        '; SameSite=Lax'
     ]);
     return { sessionId, session };
   }
