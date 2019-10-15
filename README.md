@@ -41,7 +41,7 @@ Remove-Job -Name "SERVICE_A", "SERVICE_B", "SERVICE_C"
 ### Load Balanced
 
 ```bash
-i=0
+i=1
 for service in A B C; do
     for j in $(seq $i $((i+2))); do
         SERVICE_NAME=$service \
