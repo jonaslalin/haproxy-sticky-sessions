@@ -2,6 +2,8 @@
 
 ## Setup
 
+### Standalone
+
 ```powershell
 Start-Job -Name SERVICE_A -ScriptBlock {
     Set-Location $Using:PWD
@@ -10,7 +12,7 @@ Start-Job -Name SERVICE_A -ScriptBlock {
     npm start
 }
 
-Start-Job -Name SERVICE_B-ScriptBlock {
+Start-Job -Name SERVICE_B -ScriptBlock {
     Set-Location $Using:PWD
     $Env:SERVICE_NAME = "B"
     $Env:SERVICE_PORT = "8082"
@@ -34,6 +36,20 @@ Receive-Job -Name SERVICE_C
 ```powershell
 Stop-Job -Name "SERVICE_A", "SERVICE_B", "SERVICE_C"
 Remove-Job -Name "SERVICE_A", "SERVICE_B", "SERVICE_C"
+```
+
+### Load Balanced
+
+```bash
+i=0
+for service in A B C; do
+    for j in $(seq $i $((i+2))); do
+        SERVICE_NAME=$service \
+        SERVICE_PORT=$((9080+j)) \
+        node index.js >SERVICE_${service}_SERVER_${j}.log &
+    done
+    i=$((i+3))
+done
 ```
 
 ## Queries

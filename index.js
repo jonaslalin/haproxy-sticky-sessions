@@ -4,7 +4,7 @@ const os = require('os');
 const hostname = os.hostname();
 const serviceName = process.env['SERVICE_NAME'] || 'A';
 const servicePort = +(process.env['SERVICE_PORT'] || '8080');
-const sessionIdCookieName = `SESSION_ID_SERVICE_${serviceName}`;
+const sessionIdCookieName = `SERVICE_${serviceName}_SESSION_ID`;
 const secureCookieAttribute =
   process.env['SECURE_COOKIE_ATTRIBUTE'] === 'true' || false;
 
@@ -43,7 +43,7 @@ function makeLoggingMiddleware(requestCounter) {
 
 function makeSessionMiddleware() {
   const sessions = {};
-  let sessionIdGenerator = 0;
+  let sessionIdGenerator = Math.floor(Math.random() * 800000) + 100000;
 
   function sessionMiddleware(request, response) {
     return getSession(request) || createSession(response);
@@ -67,7 +67,7 @@ function makeSessionMiddleware() {
   }
 
   function createSession(response) {
-    const sessionId = `${hostname}-${sessionIdGenerator++}`;
+    const sessionId = `${hostname}_${sessionIdGenerator++}`;
     const session = { created: Date.now() };
     sessions[sessionId] = session;
     response.setHeader('Set-Cookie', [
@@ -216,4 +216,4 @@ createServer()
   })
   .listen(servicePort);
 
-console.log(`Service ${serviceName} started on ${hostname}:${servicePort}.`);
+console.log(`SERVICE_${serviceName} started on ${hostname}:${servicePort}.`);
